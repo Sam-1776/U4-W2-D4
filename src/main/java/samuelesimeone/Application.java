@@ -1,11 +1,15 @@
 package samuelesimeone;
 
 import com.github.javafaker.Faker;
+import org.apache.commons.io.FileUtils;
 import samuelesimeone.categorie.Category;
 import samuelesimeone.classi.Customer;
 import samuelesimeone.classi.Order;
 import samuelesimeone.classi.Product;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Predicate;
@@ -115,6 +119,10 @@ public class Application {
             System.out.println("Customer: " + nome + ", Totale:" + tot);
         });
 
+        System.out.println("******************************** Esercizio 3 *********************************************");
+        List<Product> piùCari = warehouse.stream().sorted(Comparator.comparing(Product::getPrice).reversed()).limit(5).toList();
+        piùCari.forEach(System.out::println);
+
         System.out.println("******************************** Esercizio 4 *********************************************");
         riassuntoOrderCustomer.forEach((nome,ordine) -> {
             Double media = 0.0;
@@ -134,6 +142,35 @@ public class Application {
             }
             System.out.println("Categoria: " + category + ", Lista: " + price);
         });
+
+        System.out.println("******************************** Esercizio 6 *********************************************");
+        File file = new File("src/main/java/samuelesimeone/dbProduct.txt");
+        for (int i = 0; i < warehouse.size(); i++) {
+            try{
+                FileUtils.writeStringToFile(file,warehouse.get(i).name + "@" + warehouse.get(i).category + "@" + warehouse.get(i).price + "#", StandardCharsets.UTF_8, true);
+            }catch (IOException e ){
+                System.out.println(e.getMessage());
+            }
+        }
+//        FileUtils.deleteQuietly(file);
+
+//        System.out.println("******************************** Esercizio 7 *********************************************");
+//            try{
+//                List<Product> newMeg = new ArrayList<>();
+//                String contenuto = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+//                System.out.println(contenuto.length());
+//                for (int a = 0; a < contenuto.length(); a++) {
+//                    for (int i = 0; i < 22; i++) {
+//                        System.out.println(contenuto.split("#")[i]);
+//                        for (int j = 0; j < 3; j++) {
+//                            System.out.println(contenuto.split("#")[i].split("@")[j]);
+//                        }
+//                    }
+//                }
+//
+//            }catch (IOException e){
+//                System.out.println(e.getMessage());
+//            }
 
     }
 
